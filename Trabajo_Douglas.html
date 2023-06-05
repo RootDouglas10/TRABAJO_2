@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ejercicios de javascript y ajax</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <body style="background-color:#66b4f3;">
+</body>
+  <body>
+    <h1 style="text-align: center;">Ejercicios de javascript.</h1>
+  </body>
+  <br>
+  <script>
+    function isPalindrome() {
+      var palabra= document.getElementById('palabra').value;
+      var reversed = palabra.split('').reverse().join('');
+      
+      if (palabra === reversed) {
+        document.getElementById('resultado1').textContent = "LA PALABRA SI ES UN PALINDROMA";
+      } else {
+        document.getElementById('resultado1').textContent = "ESTA PALABRA NO ES UN PALINDROMA";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>PALABRA PALINDROMA</h2>
+  <label>INTRODUZCA LA PALABRA <input type="text" id="palabra"></label>
+  <br> <br>
+  <button onclick="isPalindrome()">EVALUAR</button>
+  <div id="resultado1"></div>
+</body> 
+<br>
+<script>
+    function findGreaterNumber() {
+      var num1 = parseFloat(document.getElementById('num1').value);
+      var num2 = parseFloat(document.getElementById('num2').value);
+
+      if (isNaN(num1) || isNaN(num2)) {
+        document.getElementById('resultado2').textContent = 'Ingresa números válidos';
+      } else {
+        if (num1 > num2) {
+          document.getElementById('resultado2').textContent = 'El número mayor es: ' + num1;
+        } else if (num2 > num1) {
+          document.getElementById('resultado2').textContent = 'El número mayor es: ' + num2;
+        } else {
+          document.getElementById('resultado2').textContent = 'Los números son iguales';
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>COMPARAR DOS NUMEROS</h2>
+  <label for="number1">ESCRIBA EL. PRIMER NUMERO</label>
+  <input type="text" id="num1">
+  <br> <br>
+  <label for="number2">ESCRIBA EL SEGUNDO NUMERO</label>
+  <input type="text" id="num2">
+  <br> <br>
+  <button onclick="findGreaterNumber()">Comparar</button>
+  <p id="resultado2"></p>
+</body>
+<br>
+<script>
+  function findVowels() {
+    var vocal = document.getElementById('vocal').value;
+    var vowels = '';
+
+    for (var i = 0; i < vocal.length; i++) {
+      var character = vocal.charAt(i).toLowerCase();
+
+      if (character === 'a' || character === 'e' || character === 'i' || character === 'o' || character === 'u') {
+        vowels += character + ' ';
+      }
+    }
+
+    if (vowels === '') {
+      document.getElementById('resultado3').textContent = 'No se encontraron vocales en la frase';
+    } else {
+      document.getElementById('resultado3').textContent = 'Vocales encontradas: ' + vowels;
+    }
+  }
+</script>
+</head>
+<body>
+<h2>Detector de Vocales</h2>
+<label for="vocal">Ingresa una palabra</label>
+<input type="text" id="vocal">
+<br> <br>
+<button onclick="findVowels()">Buscar Vocales</button>
+<p id="resultado3"></p>
+</body>
+<script>
+  function countVowels() {
+    var phrase = document.getElementById('phrase').value;
+    var vowels = {
+      'a': 0,
+      'e': 0,
+      'i': 0,
+      'o': 0,
+      'u': 0
+    };
+
+    for (var i = 0; i < phrase.length; i++) {
+      var character = phrase.charAt(i).toLowerCase();
+
+      if (vowels.hasOwnProperty(character)) {
+        vowels[character]++;
+      }
+    }
+
+    var result = '';
+
+    for (var vowel in vowels) {
+      result += vowel + ': ' + vowels[vowel] + ' ';
+    }
+
+    document.getElementById('resultado4').textContent = 'La cantidad de vocales es de vocales: ' + result;
+  }
+</script>
+</head> <br>
+<body>
+<h2>Contador de Vocales</h2>
+<label for="phrase">Ingresa una frase:</label>
+<input type="text" id="phrase">
+<br> <br>
+<button onclick="countVowels()">Cantidad de vocales</button>
+<p id="resultado4"></p>
+</body>
+
+<body>
+  <h1 style="text-align: center;">Ejercicios de ajax.</h1>
+</body>
+<br>
+
+
+
+<script>
+    $(document).ready(function() {
+       
+        $('#urlInput').val(window.location.href);
+
+        
+        $('#showContentsBtn').click(function() {
+            var url = $('#urlInput').val();
+
+            $('#status').text('espera...');
+
+          
+            $('#httpHeaders').empty();
+
+           
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response, status, xhr) {
+                   
+                    $('#status').text('Completado');
+
+                    
+                    var headers = xhr.getAllResponseHeaders().split('\n');
+                    headers.forEach(function(header) {
+                        if (header.trim() !== '') {
+                            $('#httpHeaders').append('<li>' + header + '</li>');
+                        }
+                    });
+
+                    
+                    $('#code').text(xhr.status + ' ' + xhr.statusText);
+
+                    
+                    $('#fileContents').text(response);
+                },
+                error: function(xhr, status, error) {
+                    
+                    $('#status').text('Error: ' + error);
+                }
+            });
+        });
+    });
+</script>
+</head>
+<body>
+<label for="urlInput">URL:</label>
+<input type="text" id="urlInput">
+<button id="showContentsBtn">Mostrar</button>
+
+<h3> <p style = "font-family:courier,arial,helvética;"></p>Estado de peticion</h3></p>
+<div id="status"></div>
+
+<h3>cabeceras http</h3>
+<ul id="httpHeaders"></ul>
+
+
+<h3>Codigo de estado</h3>
+<div id="code"></div>
+
+<h3>Contenido del archivo</h3>
+<pre id="fileContents"></pre>
+</body>
+</html>
